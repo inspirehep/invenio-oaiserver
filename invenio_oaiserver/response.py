@@ -16,6 +16,7 @@ from flask import current_app, url_for
 from invenio_db import db
 from invenio_records.api import Record
 from invenio_records.models import RecordMetadata
+from invenio_pidstore.models import PersistentIdentifier
 from lxml import etree
 from lxml.etree import Element, ElementTree, SubElement
 
@@ -259,7 +260,8 @@ def header(parent, identifier, datestamp, sets=None, deleted=False):
 def getrecord(**kwargs):
     """Create OAI-PMH response for verb Identify."""
     record_dumper = serializer(kwargs['metadataPrefix'])
-    pid = OAIIDProvider.get(pid_value=kwargs['identifier']).pid
+    pid_value = kwargs['identifier'].replace('oai:inspirehep.net:', '')
+    pid = PersistentIdentifier.get('lit', pid_value)
     record = Record.get_record(pid.object_uuid)
 
     e_tree, e_getrecord = verb(**kwargs)
