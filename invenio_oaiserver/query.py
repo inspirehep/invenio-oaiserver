@@ -13,6 +13,7 @@ from elasticsearch import VERSION as ES_VERSION
 from elasticsearch_dsl import Q
 from flask import current_app
 from invenio_search import RecordsSearch, current_search_client
+from invenio_search.utils import prefix_index
 from werkzeug.utils import cached_property, import_string
 
 from . import current_oaiserver
@@ -69,7 +70,7 @@ def get_affected_records(spec=None, search_pattern=None):
         queries.append(query_string_parser(search_pattern=search_pattern))
 
     search = OAIServerSearch(
-        index=current_app.config['OAISERVER_RECORD_INDEX'],
+        index=prefix_index(current_app.config['OAISERVER_RECORD_INDEX']),
     ).query(Q('bool', should=queries))
 
     for result in search.scan():
@@ -85,7 +86,7 @@ def get_records(**kwargs):
 
     if scroll_id is None:
         search = OAIServerSearch(
-            index=current_app.config['OAISERVER_RECORD_INDEX'],
+            index=prefix_index(current_app.config['OAISERVER_RECORD_INDEX']),
         ).params(
             scroll='{0}s'.format(scroll),
         ).extra(
