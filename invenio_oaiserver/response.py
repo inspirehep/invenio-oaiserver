@@ -17,7 +17,6 @@ from invenio_db import db
 from invenio_records.api import Record
 from invenio_records.models import RecordMetadata
 from invenio_pidstore.models import PersistentIdentifier
-from invenio_search.utils import prefix_index
 from lxml import etree
 from lxml.etree import Element, ElementTree, SubElement
 
@@ -121,8 +120,8 @@ def identify(**kwargs):
             NS_OAIPMH, 'earliestDatestamp'))
     earliest_date = datetime(MINYEAR, 1, 1)
     earliest_record = OAIServerSearch(
-        index=prefix_index(
-            current_app.config['OAISERVER_RECORD_INDEX'])).sort(
+        current_app.config['OAISERVER_RECORD_INDEX']
+    ).sort(
         {"_created": {"order": "asc"}}
     )[0:1].execute()
     if len(earliest_record.hits.hits) > 0:
