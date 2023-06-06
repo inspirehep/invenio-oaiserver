@@ -7,7 +7,7 @@
 # under the terms of the MIT License; see LICENSE file for more details.
 
 """The details of the configuration options for OAI-PMH server."""
-
+import invenio_search
 import pkg_resources
 
 OAISERVER_PAGE_SIZE = 10
@@ -111,7 +111,7 @@ OAISERVER_REGISTER_SET_SIGNALS = True
 """Catch set insert/update/delete signals and update the `_oai` record
 field."""
 
-OAISERVER_QUERY_PARSER = 'elasticsearch_dsl:Q'
+OAISERVER_QUERY_PARSER = invenio_search.engine.dsl.Q
 """Define query parser for OIASet definition."""
 
 OAISERVER_QUERY_PARSER_FIELDS = []

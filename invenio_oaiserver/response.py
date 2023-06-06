@@ -11,11 +11,8 @@
 from datetime import MINYEAR, datetime, timedelta
 
 import arrow
-from elasticsearch import VERSION as ES_VERSION
 from flask import current_app, url_for
-from invenio_db import db
 from invenio_records.api import Record
-from invenio_records.models import RecordMetadata
 from invenio_pidstore.models import PersistentIdentifier
 from lxml import etree
 from lxml.etree import Element, ElementTree, SubElement
@@ -120,14 +117,13 @@ def identify(**kwargs):
             NS_OAIPMH, 'earliestDatestamp'))
     earliest_date = datetime(MINYEAR, 1, 1)
     earliest_record = OAIServerSearch(
-        current_app.config['OAISERVER_RECORD_INDEX']
+        index=current_app.config['OAISERVER_RECORD_INDEX']
     ).sort(
         {"_created": {"order": "asc"}}
     )[0:1].execute()
     if len(earliest_record.hits.hits) > 0:
         hit = earliest_record.hits.hits[0]
-        if ES_VERSION[0] >= 7:
-            hit = hit.to_dict()
+        hit = hit.to_dict()
         created_date_str = hit.get("_source", {}).get('_created')
         if created_date_str:
             earliest_date = arrow.get(

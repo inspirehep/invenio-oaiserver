@@ -43,17 +43,14 @@ extras_require = {
         'Sphinx>=1.6.7',
     ],
     # Elasticsearch
-    'elasticsearch2': [
-        'invenio-search[elasticsearch2]>={}'.format(invenio_search_version)
-    ],
-    'elasticsearch5': [
-        'invenio-search[elasticsearch5]>={}'.format(invenio_search_version)
-    ],
-    'elasticsearch6': [
-        'invenio-search[elasticsearch6]>={}'.format(invenio_search_version)
-    ],
     'elasticsearch7': [
         'invenio-search[elasticsearch7]>={}'.format(invenio_search_version)
+    ],
+    'opensearch1': [
+        'invenio-search[opensearch1]>=2.1.0,<3.0.0'
+    ],
+    'opensearch2': [
+        'invenio-search[opensearch2]>=2.1.0,<3.0.0'
     ],
     # Database
     'mysql': [
@@ -78,7 +75,7 @@ for name, reqs in extras_require.items():
     extras_require['all'].extend(reqs)
 
 setup_requires = [
-    'Babel>=1.3',
+    'Babel>=1.3,<3.0.0',
     'pytest-runner>=2.6.2',
 ]
 
@@ -92,6 +89,7 @@ install_requires = [
     'invenio-records>=1.0.0',
     'invenio-rest>=1.1.1',
     'lxml>=3.5.0',
+    'flask-cors>=3.0.8'
 ]
 
 packages = find_packages()
