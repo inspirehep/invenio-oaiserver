@@ -9,10 +9,9 @@
 """Query parser."""
 
 import six
-from elasticsearch import VERSION as ES_VERSION
-from elasticsearch_dsl import Q
 from flask import current_app
 from invenio_search import RecordsSearch, current_search_client
+from invenio_search.engine import dsl
 from werkzeug.utils import cached_property, import_string
 
 from . import current_oaiserver
@@ -39,7 +38,7 @@ class OAIServerSearch(RecordsSearch):
     class Meta:
         """Configuration for OAI server search."""
 
-        default_filter = Q('exists', field='_oai.id')
+        default_filter = dsl.Q('exists', field='_oai.id')
 
 
 def get_affected_records(spec=None, search_pattern=None):
@@ -63,14 +62,14 @@ def get_affected_records(spec=None, search_pattern=None):
     queries = []
 
     if spec is not None:
-        queries.append(Q('match', **{'_oai.sets': spec}))
+        queries.append(dsl.Q('match', **{'_oai.sets': spec}))
 
     if search_pattern:
         queries.append(query_string_parser(search_pattern=search_pattern))
 
     search = OAIServerSearch(
         index=current_app.config['OAISERVER_RECORD_INDEX'],
-    ).query(Q('bool', should=queries))
+    ).query(dsl.Q('bool', should=queries))
 
     for result in search.scan():
         yield result.meta.id
@@ -132,9 +131,7 @@ def get_records(**kwargs):
         @cached_property
         def has_next(self):
             """Return True if there is next page."""
-            total = self.total if ES_VERSION[0] < 7 else \
-                self.total.get('value', 0)
-            return self.page * self.per_page <= total
+            return self.page * self.per_page <= self.total
 
         @cached_property
         def next_num(self):
