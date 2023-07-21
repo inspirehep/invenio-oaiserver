@@ -118,7 +118,7 @@ def get_records(**kwargs):
         def __init__(self, response):
             """Initilize pagination."""
             self.response = response
-            self.total = response['hits']['total']
+            self.total = response["hits"]["total"]["value"]
             self._scroll_id = response.get('_scroll_id')
 
             # clean descriptor on last page
