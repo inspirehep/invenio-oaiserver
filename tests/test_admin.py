@@ -21,7 +21,6 @@ from invenio_oaiserver.admin import set_adminview
 from invenio_oaiserver.models import OAISet
 
 
-@pytest.mark.skip(reason='problem with babel')
 def test_admin(app):
     """Test Flask-Admin interace."""
     admin = Admin(app, name='Test')

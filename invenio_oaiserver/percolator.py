@@ -40,7 +40,7 @@ def _create_percolator_mapping(index, mapping_path=None):
     percolator_index = _build_percolator_index_name(index)
     if not mapping_path:
         mapping_path = current_search.mappings[index]
-    if not current_search_client.indices.exists(percolator_index):
+    if not current_search_client.indices.exists(index=percolator_index):
         with open(mapping_path, "r") as body:
             mapping = json.load(body)
             mapping["mappings"]["properties"].update(PERCOLATOR_MAPPING["properties"])

@@ -91,7 +91,7 @@ def app():
         if str(db.engine.url) != 'sqlite://':
             drop_database(str(db.engine.url))
         list(search.delete(ignore=[404]))
-        search.client.indices.delete("*-percolators")
+        search.client.indices.delete(index="*-percolators", ignore=[404])
     shutil.rmtree(instance_path)
 
 
