@@ -53,7 +53,7 @@ def app():
         SQLALCHEMY_TRACK_MODIFICATIONS=True,
         SERVER_NAME='app',
         OAISERVER_ID_PREFIX='oai:inveniosoftware.org:recid/',
-        OAISERVER_QUERY_PARSER_FIELDS=["title_statement"],
+        OAISERVER_QUERY_PARSER_FIELDS=["title_statement.title"],
         OAISERVER_RECORD_INDEX='_all',
         OAISERVER_REGISTER_SET_SIGNALS=True,
     )
