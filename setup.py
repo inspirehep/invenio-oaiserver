@@ -43,6 +43,9 @@ extras_require = {
     'opensearch2': [
         'invenio-search[opensearch2]>=2.1.0,<3.0.0'
     ],
+    'opensearch3': [
+        'invenio-search[opensearch3]>=2.1.0,<3.0.0'
+    ],
     # Database
     'mysql': [
         'invenio-db[mysql]==1.1.5',
@@ -62,7 +65,7 @@ for name, reqs in extras_require.items():
             'mysql', 'postgresql', 'sqlite',
             'elasticsearch2', 'elasticsearch5',
             'elasticsearch6', 'elasticsearch7',
-            'opensearch1', 'opensearch2'):
+            'opensearch1', 'opensearch2', 'opensearch3'):
         continue
     extras_require['all'].extend(reqs)
 

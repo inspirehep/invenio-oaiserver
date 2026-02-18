@@ -37,13 +37,8 @@ jobs:
 
       - name: Install python dependencies
         run: |
-          pip install --upgrade pip py
-          pip install "setuptools<81"
-          pip install twine wheel coveralls babel
-          pip install -e ".[tests,opensearch2]"
-          pip install --force-reinstall --no-deps -e "git+https://github.com/inspirehep/invenio-records.git@master#egg=invenio-records"
-          pip install --force-reinstall --no-deps "invenio-search[opensearch2] @ git+https://github.com/inspirehep/invenio-search.git@master"
-          pip install --force-reinstall --no-deps "invenio-records-rest @ git+https://github.com/inspirehep/invenio-records-rest.git@master"
+          pip install --upgrade pip
+          pip install -r requirements-devel.txt
 
       - name: Show python dependencies
         run: pip freeze

@@ -8,5 +8,5 @@
 
 -e git+https://github.com/inspirehep/invenio-records.git@master#egg=invenio-records
 -e git+https://github.com/inspirehep/invenio-records-rest.git@master#egg=invenio-records-rest
-invenio-search[opensearch2] @ git+https://github.com/inspirehep/invenio-search.git@master
--e .[all,opensearch2]
+invenio-search[opensearch3] @ git+https://github.com/inspirehep/invenio-search.git
+-e .[all,opensearch3]
