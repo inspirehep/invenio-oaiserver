@@ -1,0 +1,52 @@
+name: Test and release
+
+on:
+  workflow_call:
+
+jobs:
+  Test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:14.1
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: inspirehep
+        ports:
+          - 5432:5432
+      elasticsearch:
+        image: registry.cern.ch/cern-sis/inspirehep/opensearch:3.2.0
+        env:
+          bootstrap.memory_lock: true
+          ES_JAVA_OPTS: -Xms1024m -Xmx1024m
+          discovery.type: single-node
+          DISABLE_SECURITY_PLUGIN: true
+        ports:
+          - 9200:9200
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install python dependencies
+        run: |
+          pip install --upgrade pip py
+          pip install "setuptools<81"
+          pip install twine wheel coveralls babel
+          pip install -e ".[tests,opensearch2]"
+          pip install --force-reinstall --no-deps -e "git+https://github.com/inspirehep/invenio-records.git@master#egg=invenio-records"
+          pip install --force-reinstall --no-deps "invenio-search[opensearch2] @ git+https://github.com/inspirehep/invenio-search.git@master"
+          pip install --force-reinstall --no-deps "invenio-records-rest @ git+https://github.com/inspirehep/invenio-records-rest.git@master"
+
+      - name: Show python dependencies
+        run: pip freeze
+
+      - name: Run tests
+        run: ./run-tests.sh

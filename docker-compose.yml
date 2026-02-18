@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:14.1
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: inspirehep
+    ports:
+      - "5432:5432"
+
+  elasticsearch:
+    image: registry.cern.ch/cern-sis/inspirehep/opensearch:3.2.0
+    environment:
+      bootstrap.memory_lock: "true"
+      ES_JAVA_OPTS: "-Xms1024m -Xmx1024m"
+      discovery.type: "single-node"
+      DISABLE_SECURITY_PLUGIN: "true"
+    ports:
+      - "9200:9200"

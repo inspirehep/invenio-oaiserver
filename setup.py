@@ -13,34 +13,25 @@ import os
 from setuptools import find_packages, setup
 
 readme = open('README.rst').read()
-history = open('CHANGES.rst').read()
 
 tests_require = [
     'SQLAlchemy-Continuum>=1.2.1',
-    'check-manifest>=0.25',
     'coverage>=4.0',
-    'invenio-indexer>=1.1.0',
-    'invenio-jsonschemas>=1.0.0',
+    'invenio-indexer==2.3.0',
+    'invenio-jsonschemas==1.0.1',
     'invenio-marc21>=1.0.0a9',
-    'isort>=4.2.2',
     'mock>=1.3.0',
-    'pydocstyle>=1.0.0',
-    'pytest-cov>=1.8.0',
-    'pytest-pep8>=1.0.6',
-    'pytest>=4.0.0,<5.0.0',
+    'pytest-invenio>=1.2.1',
 ]
 
 invenio_search_version = '1.2.0'
 
 extras_require = {
     'admin': [
-        'Flask-Admin>=1.3.0',
+        'Flask-Admin==1.6.1',
     ],
     'celery': [
-        'invenio-celery>=1.1.1',
-    ],
-    'docs': [
-        'Sphinx>=1.6.7',
+        'invenio-celery==1.3.1',
     ],
     # Elasticsearch
     'elasticsearch7': [
@@ -54,13 +45,13 @@ extras_require = {
     ],
     # Database
     'mysql': [
-        'invenio-db[mysql]>=1.0.0',
+        'invenio-db[mysql]==1.1.5',
     ],
     'postgresql': [
-        'invenio-db[postgresql]>=1.0.0',
+        'invenio-db[postgresql]==1.1.5',
     ],
     'sqlite': [
-        'invenio-db>=1.0.0',
+        'invenio-db==1.1.5',
     ],
     'tests': tests_require,
 }
@@ -70,26 +61,23 @@ for name, reqs in extras_require.items():
     if name[0] == ':' or name in (
             'mysql', 'postgresql', 'sqlite',
             'elasticsearch2', 'elasticsearch5',
-            'elasticsearch6', 'elasticsearch7'):
+            'elasticsearch6', 'elasticsearch7',
+            'opensearch1', 'opensearch2'):
         continue
     extras_require['all'].extend(reqs)
 
-setup_requires = [
-    'Babel>=1.3,<3.0.0',
-    'pytest-runner>=2.6.2',
-]
-
 install_requires = [
-    'arrow>=0.13.0',
-    'Flask>=0.11.1',
+    'arrow==1.3.0',
+    'Flask==2.1.3',
     'Werkzeug>=0.14.1',
     'Flask-BabelEx>=0.9.3',
-    'dojson>=1.3.0',
-    'invenio-pidstore>=1.0.0',
+    'dojson==1.5.0',
+    'invenio-pidstore==1.3.1',
     'invenio-records>=1.0.0',
-    'invenio-rest>=1.1.1',
-    'lxml>=3.5.0',
-    'flask-cors>=3.0.8'
+    'invenio-rest==1.2.8',
+    'lxml==5.2.2',
+    'flask-cors>=3.0.8',
+    'marshmallow==2.21.0',
 ]
 
 packages = find_packages()
@@ -104,7 +92,7 @@ setup(
     name='invenio-oaiserver',
     version=version,
     description=__doc__,
-    long_description=readme + '\n\n' + history,
+    long_description=readme,
     keywords='invenio OAI-PMH',
     license='MIT',
     author='CERN',
@@ -145,8 +133,6 @@ setup(
     },
     extras_require=extras_require,
     install_requires=install_requires,
-    setup_requires=setup_requires,
-    tests_require=tests_require,
     classifiers=[
         'Environment :: Web Environment',
         'Intended Audience :: Developers',

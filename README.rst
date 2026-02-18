@@ -25,3 +25,15 @@
 Invenio module that implements an OAI-PMH server.
 
 Further documentation is available on https://invenio-oaiserver.readthedocs.io/
+
+
+Run Locally
+-----------
+
+.. code-block:: console
+
+    $ docker-compose up -d
+    $ pyenv virtualenv oaiserver
+    $ pyenv activate oaiserver
+    $ pip install -r requirements-devel.txt
+    $ ./run-tests.sh
