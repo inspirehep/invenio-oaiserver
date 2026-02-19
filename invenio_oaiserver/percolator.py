@@ -17,6 +17,7 @@ from invenio_indexer.utils import schema_to_index
 from invenio_indexer.api import RecordIndexer
 from invenio_search import current_search, current_search_client
 from invenio_search.utils import build_index_name
+from opensearchpy.exceptions import NotFoundError
 
 from .models import OAISet
 from .proxies import current_oaiserver
@@ -93,10 +94,13 @@ def _delete_percolator(spec, search_pattern):
         for index in current_search.mappings.keys():
             # Create the percolator doc_type in the existing index for >= ES5
             _create_percolator_mapping(index)
-            current_search_client.delete(
-                index=_build_percolator_index_name(index),
-                id='oaiset-{}'.format(spec), ignore=[404]
-            )
+            try:
+                current_search_client.delete(
+                    index=_build_percolator_index_name(index),
+                    id='oaiset-{}'.format(spec)
+                )
+            except NotFoundError:
+                pass
 
 
 def _build_cache():
