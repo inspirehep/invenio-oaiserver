@@ -26,7 +26,6 @@ from invenio_pidstore import InvenioPIDStore
 from invenio_records import InvenioRecords
 from invenio_search import InvenioSearch
 from invenio_search.engine import SearchEngine
-from opensearchpy.exceptions import NotFoundError
 from sqlalchemy_utils.functions import create_database, database_exists, \
     drop_database
 
@@ -92,10 +91,8 @@ def app():
         if str(db.engine.url) != 'sqlite://':
             drop_database(str(db.engine.url))
         list(search.delete(ignore=[404]))
-        try:
-            search.client.indices.delete(index="*-percolators")
-        except NotFoundError:
-            pass
+        search.client.indices.delete(index="*-percolators", ignore=[404])
+
     shutil.rmtree(instance_path)
 
 
